@@ -1,0 +1,996 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta charset="ISO-8859-1">
+    <title>Second</title>
+    <link rel="stylesheet"
+          href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
+          integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO"
+          crossorigin="anonymous">
+    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+    <style>
+        .svg-icon {
+            width: 1em;
+            height: 1em;
+        }
+
+        .svg-icon path,
+        .svg-icon polygon,
+        .svg-icon rect {
+            fill: #ffffff;
+        }
+
+        .svg-icon circle {
+            stroke: #ffffff;
+            stroke-width: 1;
+        }
+
+        a {
+            font-family: initial;
+        }
+    </style>
+</head>
+<body class="bg-white">
+<div th:replace="~{fragments/header :: header}">
+</div>
+<div class="container my-2" align="center">
+    <div class="row">
+        <div class="col-md pl-0 mt-2" th:align="start">
+            <img th:src="@{/images/logo.png}" width="200" height="60"/>
+        </div>
+
+        <div class="col-md pr-0" th:align="right">
+            <img th:src="@{/images/atm.png}" width="200" height="90"/>
+        </div>
+    </div>
+</div>
+<div class="container text-info">
+    <a th:href="@{/}" th:text="${name}"></a>
+    <span class="text-primary"> > </span>
+    <a th:href="@{/secondary/getAll(index=${thirds})}" th:text="${names}"></a>
+    <span class="text-primary"> > </span>
+</div>
+<div role="main" class="container my-2 mb-lg-5 mb-lg-5" align="center">
+
+    <h4 class="mt-3">So'rovning tarkibi va xususiyatlari</h4>
+    <table border="1" class="table table-responsive-md table-hover mt-3">
+        <thead class="bg-primary text-white">
+        <tr align="center">
+            <th style="vertical-align: middle">№</th>
+            <th style="vertical-align: middle" class="align-self-center">Nomlanishi</th>
+            <th style="vertical-align: middle" class="align-self-center">Belgilanishi</th>
+            <th style="vertical-align: middle">M</th>
+            <th style="vertical-align: middle">T</th>
+            <th style="vertical-align: middle">S</th>
+            <th style="vertical-align: middle">R</th>
+            <th>
+                <div class="btn-group">
+                    <button id="createSecc" type="button" class="btn btn-success btn-sm" onclick="add_moreR()">Qo'shish
+                    </button>
+                </div>
+            </th>
+        </tr>
+        </thead>
+        <tbody id="created1">
+        <tr align="center" id="tr02" th:each="thirdPage,iterationStatus:${requestPage}">
+            <td th:text="${iterationStatus.count}">1.</td>
+            <td align="start"><a class="text-dark"
+                                 th:text="${thirdPage.getName()}"></a></td>
+            <td align="start" class="text-dark" th:text="${thirdPage.getMark()}"></td>
+            <td align="center" class="text-dark" th:text="${thirdPage.getM()}"></td>
+            <td align="center" class="text-dark" th:text="${thirdPage.getT()}"></td>
+            <td align="center" class="text-dark" th:text="${thirdPage.getS()}"></td>
+            <td align="center" class="text-dark" th:text="${thirdPage.getR()}"></td>
+            <td>
+                <div class="btn-group" style="font-family: math">
+                    <a class="btn btn-primary btn-sm" style="font-family: initial" th:value="${thirdPage.id}"
+                       th:attr="onclick=|updateIndex('${thirdPage.id}','${thirdPage.getName()}','${thirdPage.getMark()}',
+                       '${thirdPage.getM()}','${thirdPage.getT()}','${thirdPage.getS()}','${thirdPage.getR()}')|">
+                        <svg class="svg-icon" viewBox="0 0 20 20">
+                            <path fill="none"
+                                  d="M19.404,6.65l-5.998-5.996c-0.292-0.292-0.765-0.292-1.056,0l-2.22,2.22l-8.311,8.313l-0.003,0.001v0.003l-0.161,0.161c-0.114,0.112-0.187,0.258-0.21,0.417l-1.059,7.051c-0.035,0.233,0.044,0.47,0.21,0.639c0.143,0.14,0.333,0.219,0.528,0.219c0.038,0,0.073-0.003,0.111-0.009l7.054-1.055c0.158-0.025,0.306-0.098,0.417-0.211l8.478-8.476l2.22-2.22C19.695,7.414,19.695,6.941,19.404,6.65z M8.341,16.656l-0.989-0.99l7.258-7.258l0.989,0.99L8.341,16.656z M2.332,15.919l0.411-2.748l4.143,4.143l-2.748,0.41L2.332,15.919z M13.554,7.351L6.296,14.61l-0.849-0.848l7.259-7.258l0.423,0.424L13.554,7.351zM10.658,4.457l0.992,0.99l-7.259,7.258L3.4,11.715L10.658,4.457z M16.656,8.342l-1.517-1.517V6.823h-0.003l-0.951-0.951l-2.471-2.471l1.164-1.164l4.942,4.94L16.656,8.342z"></path>
+                        </svg>
+                    </a>
+                    <a th:href="@{/request/delete(index=${thirdPage.id},index2=${third},tabId=${tabId},periodicity=${periodicity})}"
+                       onclick="if (!confirm('Are you sure?')) { return false }" class="btn btn-danger btn-sm">
+                        <svg class="svg-icon" viewBox="0 0 20 20">
+                            <path fill="none" d="M7.083,8.25H5.917v7h1.167V8.25z M18.75,3h-5.834V1.25c0-0.323-0.262-0.583-0.582-0.583H7.667
+								c-0.322,0-0.583,0.261-0.583,0.583V3H1.25C0.928,3,0.667,3.261,0.667,3.583c0,0.323,0.261,0.583,0.583,0.583h1.167v14
+								c0,0.644,0.522,1.166,1.167,1.166h12.833c0.645,0,1.168-0.522,1.168-1.166v-14h1.166c0.322,0,0.584-0.261,0.584-0.583
+								C19.334,3.261,19.072,3,18.75,3z M8.25,1.833h3.5V3h-3.5V1.833z M16.416,17.584c0,0.322-0.262,0.583-0.582,0.583H4.167
+								c-0.322,0-0.583-0.261-0.583-0.583V4.167h12.833V17.584z M14.084,8.25h-1.168v7h1.168V8.25z M10.583,7.083H9.417v8.167h1.167V7.083
+								z"></path>
+                        </svg>
+                    </a>
+                </div>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+    <form id="form010" th:action="@{/new/request}" th:method="post" th:object="${newRequest}" style="display: none">
+        <div class="mt-1 mb-5">
+            <div id="bases" style="display: flex">
+                <input id="second00" type="text" th:field="*{name}" class="form-control"
+                       style="width: 60%" placeholder="Nomlanishi"
+                       th:value="${keyword}" required/>
+                <input id="second002" type="text" th:field="*{mark}" class="form-control"
+                       style="width: 60%;margin-left: 1%"
+                       placeholder="Belgilanishi"
+                       th:value="${keyword}" required/>
+                <input id="second003" type="text" th:field="*{m}" class="form-control"
+                       style="width: 60%;margin-left: 1%"
+                       placeholder="M"
+                       th:value="${keyword}" required/>
+                <input id="second004" type="text" th:field="*{t}" class="form-control"
+                       style="width: 60%;margin-left: 1%"
+                       placeholder="T"
+                       th:value="${keyword}" required/>
+                <input id="second005" type="text" th:field="*{s}" class="form-control"
+                       style="width: 60%;margin-left: 1%"
+                       placeholder="S"
+                       th:value="${keyword}" required/>
+                <input id="second080" th:text="." type="text" th:field="*{r}" class="form-control"
+                       style="width: 60%;margin-left: 1%"
+                       placeholder="R"
+                       th:value="${keyword}" required/>
+            </div>
+            <input id="second007" type="text" name="third" class="form-control" style="width: 60%; display: none"
+                   placeholder="Davrivligi" th:value="${third}" required/>
+            <input id="second070" type="text" name="tabId" class="form-control" style="width: 60%; display: none"
+                   placeholder="Davrivligi" th:value="${tabId}" required/>
+            <input id="second0808" type="text" name="periodicity" class="form-control" style="width: 60%; display: none"
+                   placeholder="Davrivligi" th:value="${periodicity}" required/>
+            <div class="mt-3" style="font-family: initial">
+                <button id="saveSecR" type="submit" class="btn btn-success btn-sm"
+                        onclick="cancel()">
+                    <svg class="svg-icon" viewBox="0 0 20 20">
+                        <path fill="none" d="M7.197,16.963H7.195c-0.204,0-0.399-0.083-0.544-0.227l-6.039-6.082c-0.3-0.302-0.297-0.788,0.003-1.087
+							C0.919,9.266,1.404,9.269,1.702,9.57l5.495,5.536L18.221,4.083c0.301-0.301,0.787-0.301,1.087,0c0.301,0.3,0.301,0.787,0,1.087
+							L7.741,16.738C7.596,16.882,7.401,16.963,7.197,16.963z"></path>
+                    </svg>
+                </button>
+                <button id="cancelSecR" type="button" class="btn btn-danger btn-sm"
+                        onclick="saveOneReq()">
+                    <svg class="svg-icon" viewBox="0 0 20 20">
+                        <path fill="none" d="M11.469,10l7.08-7.08c0.406-0.406,0.406-1.064,0-1.469c-0.406-0.406-1.063-0.406-1.469,0L10,8.53l-7.081-7.08
+							c-0.406-0.406-1.064-0.406-1.469,0c-0.406,0.406-0.406,1.063,0,1.469L8.531,10L1.45,17.081c-0.406,0.406-0.406,1.064,0,1.469
+							c0.203,0.203,0.469,0.304,0.735,0.304c0.266,0,0.531-0.101,0.735-0.304L10,11.469l7.08,7.081c0.203,0.203,0.469,0.304,0.735,0.304
+							c0.267,0,0.532-0.101,0.735-0.304c0.406-0.406,0.406-1.064,0-1.469L11.469,10z"></path>
+                    </svg>
+                </button>
+            </div>
+        </div>
+    </form>
+    <form id="form" th:action="@{/third/update}" th:method="post" th:object="${newRequest}" style="display: none">
+        <div class="mt-1 mb-5">
+            <div id="b" style="display: flex">
+                <input id="s" type="text" th:field="*{name}" class="form-control"
+                       style="width: 60%" placeholder="Nomlanishi"
+                       th:value="${keyword}" required/>
+                <input id="s002" type="text" th:field="*{mark}" class="form-control"
+                       style="width: 60%;margin-left: 1%"
+                       placeholder="Belgilanishi"
+                       th:value="${keyword}" required/>
+                <input id="s003" type="text" th:field="*{m}" class="form-control"
+                       style="width: 60%;margin-left: 1%"
+                       placeholder="M"
+                       th:value="${keyword}" required/>
+                <input id="s004" type="text" th:field="*{t}" class="form-control"
+                       style="width: 60%;margin-left: 1%"
+                       placeholder="T"
+                       th:value="${keyword}" required/>
+                <input id="s005" type="text" th:field="*{s}" class="form-control"
+                       style="width: 60%;margin-left: 1%"
+                       placeholder="S"
+                       th:value="${keyword}" required/>
+                <input id="s080" th:text="." type="text" th:field="*{r}" class="form-control"
+                       style="width: 60%;margin-left: 1%"
+                       placeholder="R"
+                       th:value="${keyword}" required/>
+
+                <input id="s00" th:text="." type="text" class="form-control"
+                       style="display: none" name="id" required/>
+            </div>
+            <input id="s007" type="text" name="third" class="form-control" style="width: 60%; display: none"
+                   placeholder="Davrivligi" th:value="${third}" required/>
+            <input id="s070" type="text" name="tabId" class="form-control" style="width: 60%; display: none"
+                   placeholder="Davrivligi" th:value="${tabId}" required/>
+            <input id="s808" type="text" name="periodicity" class="form-control" style="width: 60%; display: none"
+                   placeholder="Davrivligi" th:value="${periodicity}" required/>
+            <div class="mt-3" style="font-family: initial">
+                <button id="saveS" type="submit" class="btn btn-success btn-sm"
+                        onclick="cancelReq()">
+                    <svg class="svg-icon" viewBox="0 0 20 20">
+                        <path fill="none" d="M7.197,16.963H7.195c-0.204,0-0.399-0.083-0.544-0.227l-6.039-6.082c-0.3-0.302-0.297-0.788,0.003-1.087
+							C0.919,9.266,1.404,9.269,1.702,9.57l5.495,5.536L18.221,4.083c0.301-0.301,0.787-0.301,1.087,0c0.301,0.3,0.301,0.787,0,1.087
+							L7.741,16.738C7.596,16.882,7.401,16.963,7.197,16.963z"></path>
+                    </svg>
+                </button>
+                <button id="cancelS" type="button" class="btn btn-danger btn-sm"
+                        onclick="saveReq()">
+                    <svg class="svg-icon" viewBox="0 0 20 20">
+                        <path fill="none" d="M11.469,10l7.08-7.08c0.406-0.406,0.406-1.064,0-1.469c-0.406-0.406-1.063-0.406-1.469,0L10,8.53l-7.081-7.08
+							c-0.406-0.406-1.064-0.406-1.469,0c-0.406,0.406-0.406,1.063,0,1.469L8.531,10L1.45,17.081c-0.406,0.406-0.406,1.064,0,1.469
+							c0.203,0.203,0.469,0.304,0.735,0.304c0.266,0,0.531-0.101,0.735-0.304L10,11.469l7.08,7.081c0.203,0.203,0.469,0.304,0.735,0.304
+							c0.267,0,0.532-0.101,0.735-0.304c0.406-0.406,0.406-1.064,0-1.469L11.469,10z"></path>
+                    </svg>
+                </button>
+            </div>
+        </div>
+    </form>
+
+    <h4 class="mt-lg-5">Muvaffaqiyatli so'rovga javob</h4>
+    <table border="1" class="table table-responsive-md table-hover mt-3">
+        <thead class="bg-primary text-white">
+        <tr align="center">
+            <th style="vertical-align: middle">№</th>
+            <th style="vertical-align: middle" class="align-self-center">Nomlanishi</th>
+            <th style="vertical-align: middle" class="align-self-center">Belgilanishi</th>
+            <th style="vertical-align: middle">M</th>
+            <th style="vertical-align: middle">T</th>
+            <th style="vertical-align: middle">S</th>
+            <th style="vertical-align: middle">R</th>
+            <th>
+                <div class="btn-group">
+                    <button id="createSec" type="button" class="btn btn-success btn-sm" onclick="add_more()">Qo'shish
+                    </button>
+                </div>
+            </th>
+        </tr>
+        </thead>
+        <tbody id="created" th:each="thirdPage,iterationStatus:${thirdPage}">
+        <tr align="start" id="tr1">
+            <th align="center" style="vertical-align: middle;text-align: center" th:text="${iterationStatus.count}">1.
+            </th>
+            <th style="vertical-align: middle" align="start"><a class="text-dark"
+                                                                th:text="${thirdPage.getName()}"></a></th>
+            <th style="vertical-align: middle" class="text-dark" th:text="${thirdPage.getMark()}"></th>
+            <th style="vertical-align: middle;text-align: center" class="text-dark" th:text="${thirdPage.getM()}"></th>
+            <th align="center" style="vertical-align: middle;text-align: center" class="text-dark"
+                th:text="${thirdPage.getT()}"></th>
+            <th align="center" style="vertical-align: middle;text-align: center" class="text-dark"
+                th:text="${thirdPage.getS()}"></th>
+            <th align="center" style="vertical-align: middle;text-align: center" class="text-dark"
+                th:text="${thirdPage.getR()}"></th>
+            <th style="vertical-align: middle;text-align: center">
+                <div class="btn-group text-white">
+                    <a class="btn btn-primary btn-sm" th:value="${thirdPage.id}"
+                       th:attr="onclick=|editRow('${thirdPage.id}','${iterationStatus.count}','${thirdPage.getName()}',
+                       '${thirdPage.getMark()}','${thirdPage.getM()}','${thirdPage.getT}','${thirdPage.getS()}','${thirdPage.getR()}')|">
+                        <svg class="svg-icon" viewBox="0 0 20 20">
+                            <path fill="none"
+                                  d="M19.404,6.65l-5.998-5.996c-0.292-0.292-0.765-0.292-1.056,0l-2.22,2.22l-8.311,8.313l-0.003,0.001v0.003l-0.161,0.161c-0.114,0.112-0.187,0.258-0.21,0.417l-1.059,7.051c-0.035,0.233,0.044,0.47,0.21,0.639c0.143,0.14,0.333,0.219,0.528,0.219c0.038,0,0.073-0.003,0.111-0.009l7.054-1.055c0.158-0.025,0.306-0.098,0.417-0.211l8.478-8.476l2.22-2.22C19.695,7.414,19.695,6.941,19.404,6.65z M8.341,16.656l-0.989-0.99l7.258-7.258l0.989,0.99L8.341,16.656z M2.332,15.919l0.411-2.748l4.143,4.143l-2.748,0.41L2.332,15.919z M13.554,7.351L6.296,14.61l-0.849-0.848l7.259-7.258l0.423,0.424L13.554,7.351zM10.658,4.457l0.992,0.99l-7.259,7.258L3.4,11.715L10.658,4.457z M16.656,8.342l-1.517-1.517V6.823h-0.003l-0.951-0.951l-2.471-2.471l1.164-1.164l4.942,4.94L16.656,8.342z"></path>
+                        </svg>
+                    </a>
+                    <a class="btn btn-success btn-sm" th:value="${thirdPage.id}"
+                       th:attr="onclick=|addRow('${thirdPage.id}','${iterationStatus.count}')|">
+                        <svg class="svg-icon" viewBox="0 0 20 20" style="transform: rotate(45deg)">
+                            <path fill="none" d="M11.469,10l7.08-7.08c0.406-0.406,0.406-1.064,0-1.469c-0.406-0.406-1.063-0.406-1.469,0L10,8.53l-7.081-7.08
+							c-0.406-0.406-1.064-0.406-1.469,0c-0.406,0.406-0.406,1.063,0,1.469L8.531,10L1.45,17.081c-0.406,0.406-0.406,1.064,0,1.469
+							c0.203,0.203,0.469,0.304,0.735,0.304c0.266,0,0.531-0.101,0.735-0.304L10,11.469l7.08,7.081c0.203,0.203,0.469,0.304,0.735,0.304
+							c0.267,0,0.532-0.101,0.735-0.304c0.406-0.406,0.406-1.064,0-1.469L11.469,10z"></path>
+                        </svg>
+                    </a>
+                    <a th:href="@{/third/delete(index=${thirdPage.id},index2=${third},tabId=${tabId},
+                    periodicity=${periodicity})}" onclick="if (!confirm('Are you sure?')) { return false }"
+                       class="btn btn-danger btn-sm">
+                        <svg class="svg-icon" viewBox="0 0 20 20">
+                            <path fill="none" d="M7.083,8.25H5.917v7h1.167V8.25z M18.75,3h-5.834V1.25c0-0.323-0.262-0.583-0.582-0.583H7.667
+								c-0.322,0-0.583,0.261-0.583,0.583V3H1.25C0.928,3,0.667,3.261,0.667,3.583c0,0.323,0.261,0.583,0.583,0.583h1.167v14
+								c0,0.644,0.522,1.166,1.167,1.166h12.833c0.645,0,1.168-0.522,1.168-1.166v-14h1.166c0.322,0,0.584-0.261,0.584-0.583
+								C19.334,3.261,19.072,3,18.75,3z M8.25,1.833h3.5V3h-3.5V1.833z M16.416,17.584c0,0.322-0.262,0.583-0.582,0.583H4.167
+								c-0.322,0-0.583-0.261-0.583-0.583V4.167h12.833V17.584z M14.084,8.25h-1.168v7h1.168V8.25z M10.583,7.083H9.417v8.167h1.167V7.083
+								z"></path>
+                        </svg>
+                    </a>
+                </div>
+            </th>
+        </tr>
+        <tr align="center" id="tr2" th:each="examples,iterationStatuss:${thirdPage.secInners}">
+            <td th:text="${iterationStatus.count}+'.'+${iterationStatuss.count}">1.</td>
+            <td align="start"><a class="text-dark"
+                                 th:text="${examples.getName()}"></a></td>
+            <td align="start" class="text-dark" th:text="${examples.getMark()}"></td>
+            <td align="center" class="text-dark" th:text="${examples.getM()}"></td>
+            <td align="center" class="text-dark" th:text="${examples.getT()}"></td>
+            <td align="center" class="text-dark" th:text="${examples.getS()}"></td>
+            <td align="center" class="text-dark" th:text="${examples.getR()}"></td>
+            <td>
+                <div class="btn-group">
+                    <a class="btn btn-primary btn-sm" th:value="${examples.id}"
+                       th:attr="onclick=|editInner('${examples.id}','${iterationStatuss.count}','${examples.getName()}',
+                       '${examples.getMark()}','${examples.getM()}','${examples.getT}','${examples.getS()}','${examples.getR()}')|">
+                        <svg class="svg-icon" viewBox="0 0 20 20">
+                            <path fill="none"
+                                  d="M19.404,6.65l-5.998-5.996c-0.292-0.292-0.765-0.292-1.056,0l-2.22,2.22l-8.311,8.313l-0.003,0.001v0.003l-0.161,0.161c-0.114,0.112-0.187,0.258-0.21,0.417l-1.059,7.051c-0.035,0.233,0.044,0.47,0.21,0.639c0.143,0.14,0.333,0.219,0.528,0.219c0.038,0,0.073-0.003,0.111-0.009l7.054-1.055c0.158-0.025,0.306-0.098,0.417-0.211l8.478-8.476l2.22-2.22C19.695,7.414,19.695,6.941,19.404,6.65z M8.341,16.656l-0.989-0.99l7.258-7.258l0.989,0.99L8.341,16.656z M2.332,15.919l0.411-2.748l4.143,4.143l-2.748,0.41L2.332,15.919z M13.554,7.351L6.296,14.61l-0.849-0.848l7.259-7.258l0.423,0.424L13.554,7.351zM10.658,4.457l0.992,0.99l-7.259,7.258L3.4,11.715L10.658,4.457z M16.656,8.342l-1.517-1.517V6.823h-0.003l-0.951-0.951l-2.471-2.471l1.164-1.164l4.942,4.94L16.656,8.342z"></path>
+                        </svg>
+                    </a>
+                    <a th:href="@{/inner/delete(index=${examples.id},index2=${third},tabId=${tabId},periodicity=${periodicity})}"
+                       onclick="if (!confirm('Are you sure?')) { return false }"
+                       class="btn btn-danger btn-sm">
+                        <svg class="svg-icon" viewBox="0 0 20 20">
+                            <path fill="none" d="M7.083,8.25H5.917v7h1.167V8.25z M18.75,3h-5.834V1.25c0-0.323-0.262-0.583-0.582-0.583H7.667
+								c-0.322,0-0.583,0.261-0.583,0.583V3H1.25C0.928,3,0.667,3.261,0.667,3.583c0,0.323,0.261,0.583,0.583,0.583h1.167v14
+								c0,0.644,0.522,1.166,1.167,1.166h12.833c0.645,0,1.168-0.522,1.168-1.166v-14h1.166c0.322,0,0.584-0.261,0.584-0.583
+								C19.334,3.261,19.072,3,18.75,3z M8.25,1.833h3.5V3h-3.5V1.833z M16.416,17.584c0,0.322-0.262,0.583-0.582,0.583H4.167
+								c-0.322,0-0.583-0.261-0.583-0.583V4.167h12.833V17.584z M14.084,8.25h-1.168v7h1.168V8.25z M10.583,7.083H9.417v8.167h1.167V7.083
+								z"></path>
+                        </svg>
+                    </a>
+                </div>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+    <form id="form1" th:action="@{/new}" th:method="post" th:object="${newexample}" style="display: none">
+        <div class="mt-1 mb-5">
+            <div id="base" style="display: flex">
+                <input id="second" type="text" th:field="*{name}" class="form-control"
+                       style="width: 60%" placeholder="Nomlanishi"
+                       th:value="${keyword}" required/>
+                <input id="second2" type="text" th:field="*{mark}" class="form-control"
+                       style="width: 60%;margin-left: 1%"
+                       placeholder="Belgilanishi"
+                       th:value="${keyword}" required/>
+                <input id="second3" type="text" th:field="*{m}" class="form-control" style="width: 60%;margin-left: 1%"
+                       placeholder="M"
+                       th:value="${keyword}" required/>
+                <input id="second4" type="text" th:field="*{t}" class="form-control" style="width: 60%;margin-left: 1%"
+                       placeholder="T"
+                       th:value="${keyword}" required/>
+                <input id="second5" type="text" th:field="*{s}" class="form-control" style="width: 60%;margin-left: 1%"
+                       placeholder="S"
+                       th:value="${keyword}" required/>
+                <input id="second8" type="text" th:field="*{r}" class="form-control" style="width: 60%;margin-left: 1%"
+                       placeholder="R"
+                       th:value="${keyword}" required/>
+            </div>
+            <input id="second7" type="text" name="third" class="form-control" style="width: 60%; display: none"
+                   placeholder="Davrivligi" th:value="${third}" required/>
+            <input id="second07" type="text" name="tabId" class="form-control" style="width: 60%; display: none"
+                   placeholder="Davrivligi" th:value="${tabId}" required/>
+            <input id="second08" type="text" name="periodicity" class="form-control" style="width: 60%; display: none"
+                   placeholder="Davrivligi" th:value="${periodicity}" required/>
+            <div class="mt-3" style="font-family: initial">
+                <button id="saveSec" type="submit" class="btn btn-success btn-sm"
+                        onclick="cancel()">
+                    <svg class="svg-icon" viewBox="0 0 20 20">
+                        <path fill="none" d="M7.197,16.963H7.195c-0.204,0-0.399-0.083-0.544-0.227l-6.039-6.082c-0.3-0.302-0.297-0.788,0.003-1.087
+							C0.919,9.266,1.404,9.269,1.702,9.57l5.495,5.536L18.221,4.083c0.301-0.301,0.787-0.301,1.087,0c0.301,0.3,0.301,0.787,0,1.087
+							L7.741,16.738C7.596,16.882,7.401,16.963,7.197,16.963z"></path>
+                    </svg>
+                </button>
+                <button id="cancelSec" type="button" class="btn btn-danger btn-sm"
+                        onclick="saveOne()">
+                    <svg class="svg-icon" viewBox="0 0 20 20">
+                        <path fill="none" d="M11.469,10l7.08-7.08c0.406-0.406,0.406-1.064,0-1.469c-0.406-0.406-1.063-0.406-1.469,0L10,8.53l-7.081-7.08
+							c-0.406-0.406-1.064-0.406-1.469,0c-0.406,0.406-0.406,1.063,0,1.469L8.531,10L1.45,17.081c-0.406,0.406-0.406,1.064,0,1.469
+							c0.203,0.203,0.469,0.304,0.735,0.304c0.266,0,0.531-0.101,0.735-0.304L10,11.469l7.08,7.081c0.203,0.203,0.469,0.304,0.735,0.304
+							c0.267,0,0.532-0.101,0.735-0.304c0.406-0.406,0.406-1.064,0-1.469L11.469,10z"></path>
+                    </svg>
+                </button>
+            </div>
+        </div>
+    </form>
+    <form id="form2" th:action="@{/inner/create}" th:method="post" th:object="${newexamples}" style="display: none">
+        <div class="mt-1 mb-5">
+            <div style="display: flex">
+                <input id="inner1" type="text" th:field="*{name}" class="form-control"
+                       style="width: 60%" placeholder="Nomlanishi"
+                       th:value="${keyword}" required/>
+                <input id="inner2" type="text" th:field="*{mark}" class="form-control"
+                       style="width: 60%;margin-left: 1%"
+                       placeholder="Belgilanishi"
+                       th:value="${keyword}" required/>
+                <input id="inner3" type="text" th:field="*{m}" class="form-control" style="width: 60%;margin-left: 1%"
+                       placeholder="M"
+                       th:value="${keyword}" required/>
+                <input id="inner4" type="text" th:field="*{t}" class="form-control" style="width: 60%;margin-left: 1%"
+                       placeholder="T"
+                       th:value="${keyword}" required/>
+                <input id="inner5" type="text" th:field="*{s}" class="form-control" style="width: 60%;margin-left: 1%"
+                       placeholder="S"
+                       th:value="${keyword}" required/>
+                <input id="inner6" type="text" th:field="*{r}" class="form-control" style="width: 60%;margin-left: 1%"
+                       placeholder="R"
+                       th:value="${keyword}" required/>
+            </div>
+            <input id="second6" type="text" name="sec" class="form-control" style="width: 60%; display: none"
+                   placeholder="Davrivligi" required/>
+            <input id="second12" type="text" name="third" class="form-control" style="width: 60%; display: none"
+                   placeholder="Davrivligi" th:value="${third}" required/>
+            <input id="second09" type="text" name="tabId" class="form-control" style="width: 60%; display: none"
+                   placeholder="Davrivligi" th:value="${tabId}" required/>
+            <input id="second008" type="text" name="periodicity" class="form-control" style="width: 60%; display: none"
+                   placeholder="Davrivligi" th:value="${periodicity}" required/>
+            <div class="mt-3" style="font-family: initial">
+                <button type="submit" class="btn btn-success btn-sm"
+                        onclick="cancelInner()">
+                    <svg class="svg-icon" viewBox="0 0 20 20">
+                        <path fill="none" d="M7.197,16.963H7.195c-0.204,0-0.399-0.083-0.544-0.227l-6.039-6.082c-0.3-0.302-0.297-0.788,0.003-1.087
+							C0.919,9.266,1.404,9.269,1.702,9.57l5.495,5.536L18.221,4.083c0.301-0.301,0.787-0.301,1.087,0c0.301,0.3,0.301,0.787,0,1.087
+							L7.741,16.738C7.596,16.882,7.401,16.963,7.197,16.963z"></path>
+                    </svg>
+                </button>
+                <button type="button" class="btn btn-danger btn-sm"
+                        onclick="saveOneInner()">
+                    <svg class="svg-icon" viewBox="0 0 20 20">
+                        <path fill="none" d="M11.469,10l7.08-7.08c0.406-0.406,0.406-1.064,0-1.469c-0.406-0.406-1.063-0.406-1.469,0L10,8.53l-7.081-7.08
+							c-0.406-0.406-1.064-0.406-1.469,0c-0.406,0.406-0.406,1.063,0,1.469L8.531,10L1.45,17.081c-0.406,0.406-0.406,1.064,0,1.469
+							c0.203,0.203,0.469,0.304,0.735,0.304c0.266,0,0.531-0.101,0.735-0.304L10,11.469l7.08,7.081c0.203,0.203,0.469,0.304,0.735,0.304
+							c0.267,0,0.532-0.101,0.735-0.304c0.406-0.406,0.406-1.064,0-1.469L11.469,10z"></path>
+                    </svg>
+                </button>
+            </div>
+        </div>
+    </form>
+    <form id="form3" th:action="@{/row/update}" th:method="post" th:object="${newexample}" style="display: none">
+        <div class="mt-1 mb-5">
+            <div id="b1" style="display: flex">
+                <input id="s01" type="text" th:field="*{name}" class="form-control"
+                       style="width: 60%" placeholder="Nomlanishi"
+                       th:value="${keyword}" required/>
+                <input id="s1" type="text" th:field="*{mark}" class="form-control"
+                       style="width: 60%;margin-left: 1%"
+                       placeholder="Belgilanishi"
+                       th:value="${keyword}" required/>
+                <input id="s2" type="text" th:field="*{m}" class="form-control" style="width: 60%;margin-left: 1%"
+                       placeholder="M"
+                       th:value="${keyword}" required/>
+                <input id="s3" type="text" th:field="*{t}" class="form-control" style="width: 60%;margin-left: 1%"
+                       placeholder="T"
+                       th:value="${keyword}" required/>
+                <input id="s4" type="text" th:field="*{s}" class="form-control" style="width: 60%;margin-left: 1%"
+                       placeholder="S"
+                       th:value="${keyword}" required/>
+                <input id="s5" type="text" th:field="*{r}" class="form-control" style="width: 60%;margin-left: 1%"
+                       placeholder="R"
+                       th:value="${keyword}" required/>
+            </div>
+            <input id="se6" type="text" name="sec" class="form-control" style="width: 60%; display: none"
+                   placeholder="Davrivligi" required/>
+            <input id="s6" type="text" name="third" class="form-control" style="width: 60%; display: none"
+                   placeholder="Davrivligi" th:value="${third}" required/>
+            <input id="s7" type="text" name="tabId" class="form-control" style="width: 60%; display: none"
+                   placeholder="Davrivligi" th:value="${tabId}" required/>
+            <input id="s8" type="text" name="periodicity" class="form-control" style="width: 60%; display: none"
+                   placeholder="Davrivligi" th:value="${periodicity}" required/>
+            <div class="mt-3" style="font-family: initial">
+                <button id="sav1" type="submit" class="btn btn-success btn-sm"
+                        onclick="canRow()">
+                    <svg class="svg-icon" viewBox="0 0 20 20">
+                        <path fill="none" d="M7.197,16.963H7.195c-0.204,0-0.399-0.083-0.544-0.227l-6.039-6.082c-0.3-0.302-0.297-0.788,0.003-1.087
+							C0.919,9.266,1.404,9.269,1.702,9.57l5.495,5.536L18.221,4.083c0.301-0.301,0.787-0.301,1.087,0c0.301,0.3,0.301,0.787,0,1.087
+							L7.741,16.738C7.596,16.882,7.401,16.963,7.197,16.963z"></path>
+                    </svg>
+                </button>
+                <button id="cancel2" type="button" class="btn btn-danger btn-sm"
+                        onclick="saveRow()">
+                    <svg class="svg-icon" viewBox="0 0 20 20">
+                        <path fill="none" d="M11.469,10l7.08-7.08c0.406-0.406,0.406-1.064,0-1.469c-0.406-0.406-1.063-0.406-1.469,0L10,8.53l-7.081-7.08
+							c-0.406-0.406-1.064-0.406-1.469,0c-0.406,0.406-0.406,1.063,0,1.469L8.531,10L1.45,17.081c-0.406,0.406-0.406,1.064,0,1.469
+							c0.203,0.203,0.469,0.304,0.735,0.304c0.266,0,0.531-0.101,0.735-0.304L10,11.469l7.08,7.081c0.203,0.203,0.469,0.304,0.735,0.304
+							c0.267,0,0.532-0.101,0.735-0.304c0.406-0.406,0.406-1.064,0-1.469L11.469,10z"></path>
+                    </svg>
+                </button>
+            </div>
+        </div>
+    </form>
+    <form id="form4" th:action="@{/inner/update}" th:method="post" th:object="${newexamples}" style="display: none">
+        <div class="mt-1 mb-5">
+            <div id="b10" style="display: flex">
+                <input id="s011" type="text" th:field="*{name}" class="form-control"
+                       style="width: 60%" placeholder="Nomlanishi"
+                       th:value="${keyword}" required/>
+                <input id="s11" type="text" th:field="*{mark}" class="form-control"
+                       style="width: 60%;margin-left: 1%"
+                       placeholder="Belgilanishi"
+                       th:value="${keyword}" required/>
+                <input id="s12" type="text" th:field="*{m}" class="form-control" style="width: 60%;margin-left: 1%"
+                       placeholder="M"
+                       th:value="${keyword}" required/>
+                <input id="s13" type="text" th:field="*{t}" class="form-control" style="width: 60%;margin-left: 1%"
+                       placeholder="T"
+                       th:value="${keyword}" required/>
+                <input id="s14" type="text" th:field="*{s}" class="form-control" style="width: 60%;margin-left: 1%"
+                       placeholder="S"
+                       th:value="${keyword}" required/>
+                <input id="s15" type="text" th:field="*{r}" class="form-control" style="width: 60%;margin-left: 1%"
+                       placeholder="R"
+                       th:value="${keyword}" required/>
+            </div>
+            <input id="se16" type="text" name="sec" class="form-control" style="width: 60%; display: none"
+                   placeholder="Davrivligi" required/>
+            <input id="s16" type="text" name="third" class="form-control" style="width: 60%; display: none"
+                   placeholder="Davrivligi" th:value="${third}" required/>
+            <input id="s17" type="text" name="tabId" class="form-control" style="width: 60%; display: none"
+                   placeholder="Davrivligi" th:value="${tabId}" required/>
+            <input id="s18" type="text" name="periodicity" class="form-control" style="width: 60%; display: none"
+                   placeholder="Davrivligi" th:value="${periodicity}" required/>
+            <div class="mt-3" style="font-family: initial">
+                <button id="sav11" type="submit" class="btn btn-success btn-sm"
+                        onclick="canInner()">
+                    <svg class="svg-icon" viewBox="0 0 20 20">
+                        <path fill="none" d="M7.197,16.963H7.195c-0.204,0-0.399-0.083-0.544-0.227l-6.039-6.082c-0.3-0.302-0.297-0.788,0.003-1.087
+							C0.919,9.266,1.404,9.269,1.702,9.57l5.495,5.536L18.221,4.083c0.301-0.301,0.787-0.301,1.087,0c0.301,0.3,0.301,0.787,0,1.087
+							L7.741,16.738C7.596,16.882,7.401,16.963,7.197,16.963z"></path>
+                    </svg>
+                </button>
+                <button id="cancel12" type="button" class="btn btn-danger btn-sm"
+                        onclick="saveInner()">
+                    <svg class="svg-icon" viewBox="0 0 20 20">
+                        <path fill="none" d="M11.469,10l7.08-7.08c0.406-0.406,0.406-1.064,0-1.469c-0.406-0.406-1.063-0.406-1.469,0L10,8.53l-7.081-7.08
+							c-0.406-0.406-1.064-0.406-1.469,0c-0.406,0.406-0.406,1.063,0,1.469L8.531,10L1.45,17.081c-0.406,0.406-0.406,1.064,0,1.469
+							c0.203,0.203,0.469,0.304,0.735,0.304c0.266,0,0.531-0.101,0.735-0.304L10,11.469l7.08,7.081c0.203,0.203,0.469,0.304,0.735,0.304
+							c0.267,0,0.532-0.101,0.735-0.304c0.406-0.406,0.406-1.064,0-1.469L11.469,10z"></path>
+                    </svg>
+                </button>
+            </div>
+        </div>
+    </form>
+
+    <h4 class="mt-lg-5">Xatolik bilan yuborilgan so'rovga javob ko'rinishi:</h4>
+    <table border="1" class="table table-responsive-md table-hover mt-3">
+        <thead class="bg-primary text-white">
+        <tr align="center">
+            <th style="vertical-align: middle">№</th>
+            <th style="vertical-align: middle" class="align-self-center">Nomlanishi</th>
+            <th style="vertical-align: middle" class="align-self-center">Belgilanishi</th>
+            <th style="vertical-align: middle">M</th>
+            <th style="vertical-align: middle">T</th>
+            <th style="vertical-align: middle">S</th>
+            <th style="vertical-align: middle">R</th>
+            <th>
+                <div class="btn-group">
+                    <button id="createError" type="button" class="btn btn-success btn-sm" onclick="add_moreError()">
+                        Qo'shish
+                    </button>
+                </div>
+            </th>
+        </tr>
+        </thead>
+        <tbody id="createdError">
+        <tr align="center" id="trEr" th:each="thirdPage,iterationStatus:${errorsResp}">
+            <td th:text="${iterationStatus.count}">1.</td>
+            <td align="start"><a class="text-dark"
+                                 th:text="${thirdPage.getName()}"></a></td>
+            <td align="start" class="text-dark" th:text="${thirdPage.getMark()}"></td>
+            <td align="center" class="text-dark" th:text="${thirdPage.getM()}"></td>
+            <td align="center" class="text-dark" th:text="${thirdPage.getT()}"></td>
+            <td align="center" class="text-dark" th:text="${thirdPage.getS()}"></td>
+            <td align="center" class="text-dark" th:text="${thirdPage.getR()}"></td>
+            <td>
+                <div class="btn-group">
+                    <a class="btn btn-primary btn-sm" th:value="${thirdPage.id}"
+                       th:attr="onclick=|editError('${thirdPage.id}','${iterationStatus.count}','${thirdPage.getName()}',
+                       '${thirdPage.getMark()}','${thirdPage.getM()}','${thirdPage.getT}','${thirdPage.getS()}','${thirdPage.getR()}')|">
+                        <svg class="svg-icon" viewBox="0 0 20 20">
+                            <path fill="none"
+                                  d="M19.404,6.65l-5.998-5.996c-0.292-0.292-0.765-0.292-1.056,0l-2.22,2.22l-8.311,8.313l-0.003,0.001v0.003l-0.161,0.161c-0.114,0.112-0.187,0.258-0.21,0.417l-1.059,7.051c-0.035,0.233,0.044,0.47,0.21,0.639c0.143,0.14,0.333,0.219,0.528,0.219c0.038,0,0.073-0.003,0.111-0.009l7.054-1.055c0.158-0.025,0.306-0.098,0.417-0.211l8.478-8.476l2.22-2.22C19.695,7.414,19.695,6.941,19.404,6.65z M8.341,16.656l-0.989-0.99l7.258-7.258l0.989,0.99L8.341,16.656z M2.332,15.919l0.411-2.748l4.143,4.143l-2.748,0.41L2.332,15.919z M13.554,7.351L6.296,14.61l-0.849-0.848l7.259-7.258l0.423,0.424L13.554,7.351zM10.658,4.457l0.992,0.99l-7.259,7.258L3.4,11.715L10.658,4.457z M16.656,8.342l-1.517-1.517V6.823h-0.003l-0.951-0.951l-2.471-2.471l1.164-1.164l4.942,4.94L16.656,8.342z"></path>
+                        </svg>
+                    </a>
+                    <a th:href="@{/error/delete(index=${thirdPage.id},index2=${third},tabId=${tabId},periodicity=${periodicity})}"
+                       onclick="if (!confirm('Are you sure?')) { return false }"
+                       class="btn btn-danger btn-sm">
+                        <svg class="svg-icon" viewBox="0 0 20 20">
+                            <path fill="none" d="M7.083,8.25H5.917v7h1.167V8.25z M18.75,3h-5.834V1.25c0-0.323-0.262-0.583-0.582-0.583H7.667
+								c-0.322,0-0.583,0.261-0.583,0.583V3H1.25C0.928,3,0.667,3.261,0.667,3.583c0,0.323,0.261,0.583,0.583,0.583h1.167v14
+								c0,0.644,0.522,1.166,1.167,1.166h12.833c0.645,0,1.168-0.522,1.168-1.166v-14h1.166c0.322,0,0.584-0.261,0.584-0.583
+								C19.334,3.261,19.072,3,18.75,3z M8.25,1.833h3.5V3h-3.5V1.833z M16.416,17.584c0,0.322-0.262,0.583-0.582,0.583H4.167
+								c-0.322,0-0.583-0.261-0.583-0.583V4.167h12.833V17.584z M14.084,8.25h-1.168v7h1.168V8.25z M10.583,7.083H9.417v8.167h1.167V7.083
+								z"></path>
+                        </svg>
+                    </a>
+                </div>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+    <form id="form0101" th:action="@{/new/error}" th:method="post" th:object="${errors}" style="display: none">
+        <div class="mt-1 mb-5">
+            <div id="baseEr" style="display: flex;width: 90%">
+                <input id="secondEr1" type="text" th:field="*{name}" class="form-control"
+                       style="width: 60%" placeholder="Nomlanishi"
+                       th:value="${keyword}" required/>
+                <input id="secondEr2" type="text" th:field="*{mark}" class="form-control"
+                       style="width: 60%;margin-left: 1%"
+                       placeholder="Belgilanishi"
+                       th:value="${keyword}" required/>
+                <input id="secondEr3" type="text" th:field="*{m}" class="form-control"
+                       style="width: 60%;margin-left: 1%"
+                       placeholder="M"
+                       th:value="${keyword}" required/>
+                <input id="secondEr4" type="text" th:field="*{t}" class="form-control"
+                       style="width: 60%;margin-left: 1%"
+                       placeholder="T"
+                       th:value="${keyword}" required/>
+                <input id="secondEr5" type="text" th:field="*{s}" class="form-control"
+                       style="width: 60%;margin-left: 1%"
+                       placeholder="S"
+                       th:value="${keyword}" required/>
+                <input id="secondEr6" type="text" th:field="*{r}" class="form-control"
+                       style="width: 60%;margin-left: 1%"
+                       placeholder="R"
+                       th:value="${keyword}" required/>
+            </div>
+            <input id="secondEr7" type="text" name="third" class="form-control" style="width: 60%; display: none"
+                   placeholder="Davrivligi" th:value="${third}" required/>
+            <input id="secondEr8" type="text" name="tabId" class="form-control" style="width: 60%; display: none"
+                   placeholder="Davrivligi" th:value="${tabId}" required/>
+            <input id="secondEr9" type="text" name="periodicity" class="form-control" style="width: 60%; display: none"
+                   placeholder="Davrivligi" th:value="${periodicity}" required/>
+            <div class="mt-3" style="font-family: initial">
+                <button id="saveSecEr" type="submit" class="btn btn-success btn-sm"
+                        onclick="cancelEr()">
+                    <svg class="svg-icon" viewBox="0 0 20 20">
+                        <path fill="none" d="M7.197,16.963H7.195c-0.204,0-0.399-0.083-0.544-0.227l-6.039-6.082c-0.3-0.302-0.297-0.788,0.003-1.087
+							C0.919,9.266,1.404,9.269,1.702,9.57l5.495,5.536L18.221,4.083c0.301-0.301,0.787-0.301,1.087,0c0.301,0.3,0.301,0.787,0,1.087
+							L7.741,16.738C7.596,16.882,7.401,16.963,7.197,16.963z"></path>
+                    </svg>
+                </button>
+                <button id="cancelSecEr" type="button" class="btn btn-danger btn-sm"
+                        onclick="saveOneEr()">
+                    <svg class="svg-icon" viewBox="0 0 20 20">
+                        <path fill="none" d="M11.469,10l7.08-7.08c0.406-0.406,0.406-1.064,0-1.469c-0.406-0.406-1.063-0.406-1.469,0L10,8.53l-7.081-7.08
+							c-0.406-0.406-1.064-0.406-1.469,0c-0.406,0.406-0.406,1.063,0,1.469L8.531,10L1.45,17.081c-0.406,0.406-0.406,1.064,0,1.469
+							c0.203,0.203,0.469,0.304,0.735,0.304c0.266,0,0.531-0.101,0.735-0.304L10,11.469l7.08,7.081c0.203,0.203,0.469,0.304,0.735,0.304
+							c0.267,0,0.532-0.101,0.735-0.304c0.406-0.406,0.406-1.064,0-1.469L11.469,10z"></path>
+                    </svg>
+                </button>
+            </div>
+        </div>
+    </form>
+    <form id="form0102" th:action="@{/update/error}" th:method="post" th:object="${errors}" style="display: none">
+        <div class="mt-1 mb-5">
+            <div id="baseEr2" style="display: flex;width: 90%">
+                <input id="secondEr01" type="text" th:field="*{name}" class="form-control"
+                       style="width: 60%" placeholder="Nomlanishi"
+                       th:value="${keyword}" required/>
+                <input id="secondEr02" type="text" th:field="*{mark}" class="form-control"
+                       style="width: 60%;margin-left: 1%"
+                       placeholder="Belgilanishi"
+                       th:value="${keyword}" required/>
+                <input id="secondEr03" type="text" th:field="*{m}" class="form-control"
+                       style="width: 60%;margin-left: 1%"
+                       placeholder="M"
+                       th:value="${keyword}" required/>
+                <input id="secondEr04" type="text" th:field="*{t}" class="form-control"
+                       style="width: 60%;margin-left: 1%"
+                       placeholder="T"
+                       th:value="${keyword}" required/>
+                <input id="secondEr05" type="text" th:field="*{s}" class="form-control"
+                       style="width: 60%;margin-left: 1%"
+                       placeholder="S"
+                       th:value="${keyword}" required/>
+                <input id="secondEr06" type="text" th:field="*{r}" class="form-control"
+                       style="width: 60%;margin-left: 1%"
+                       placeholder="R"
+                       th:value="${keyword}" required/>
+            </div>
+            <input id="seEr16" type="text" name="sec" class="form-control" style="width: 60%; display: none"
+                   placeholder="Davrivligi" required/>
+            <input id="secondEr07" type="text" name="third" class="form-control" style="width: 60%; display: none"
+                   placeholder="Davrivligi" th:value="${third}" required/>
+            <input id="secondEr08" type="text" name="tabId" class="form-control" style="width: 60%; display: none"
+                   placeholder="Davrivligi" th:value="${tabId}" required/>
+            <input id="secondEr09" type="text" name="periodicity" class="form-control" style="width: 60%; display: none"
+                   placeholder="Davrivligi" th:value="${periodicity}" required/>
+            <div class="mt-3" style="font-family: initial">
+                <button id="saveEr" type="submit" class="btn btn-success btn-sm"
+                        onclick="cancelEr2()">
+                    <svg class="svg-icon" viewBox="0 0 20 20">
+                        <path fill="none" d="M7.197,16.963H7.195c-0.204,0-0.399-0.083-0.544-0.227l-6.039-6.082c-0.3-0.302-0.297-0.788,0.003-1.087
+							C0.919,9.266,1.404,9.269,1.702,9.57l5.495,5.536L18.221,4.083c0.301-0.301,0.787-0.301,1.087,0c0.301,0.3,0.301,0.787,0,1.087
+							L7.741,16.738C7.596,16.882,7.401,16.963,7.197,16.963z"></path>
+                    </svg>
+                </button>
+                <button id="cancelEr" type="button" class="btn btn-danger btn-sm"
+                        onclick="saveErs()">
+                    <svg class="svg-icon" viewBox="0 0 20 20">
+                        <path fill="none" d="M11.469,10l7.08-7.08c0.406-0.406,0.406-1.064,0-1.469c-0.406-0.406-1.063-0.406-1.469,0L10,8.53l-7.081-7.08
+							c-0.406-0.406-1.064-0.406-1.469,0c-0.406,0.406-0.406,1.063,0,1.469L8.531,10L1.45,17.081c-0.406,0.406-0.406,1.064,0,1.469
+							c0.203,0.203,0.469,0.304,0.735,0.304c0.266,0,0.531-0.101,0.735-0.304L10,11.469l7.08,7.081c0.203,0.203,0.469,0.304,0.735,0.304
+							c0.267,0,0.532-0.101,0.735-0.304c0.406-0.406,0.406-1.064,0-1.469L11.469,10z"></path>
+                    </svg>
+                </button>
+            </div>
+        </div>
+    </form>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
+        integrity="sha256-4+XzXVhsDmqanXGHaHvgh1gMQKX40OUvDEBTu8JcmNs="
+        crossorigin="anonymous">
+</script>
+<script
+        src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.bundle.min.js">
+</script>
+
+</body>
+<script>
+    var form1 = document.getElementById("form1");
+    var form2 = document.getElementById("form2");
+    var form3 = document.getElementById("form3");
+    var form4 = document.getElementById("form4");
+    var form = document.getElementById("form");
+
+    var second003 = document.getElementById("second003");
+    var second004 = document.getElementById("second004");
+    var second005 = document.getElementById("second005");
+    var second080 = document.getElementById("second080");
+    var second3 = document.getElementById("second3");
+    var second4 = document.getElementById("second4");
+    var second5 = document.getElementById("second5");
+    var second8 = document.getElementById("second8");
+
+    function add_more() {
+        form1.style.display = "inline";
+        form2.style.display = "none";
+        form3.style.display = "none";
+        form4.style.display = "none";
+    }
+
+    function cancel() {
+        form1.style.display = "none";
+        if (second003.value == "") {
+            second003.value = " ";
+        }
+        if (second004.value == "") {
+            second004.value = " ";
+        }
+        if (second005.value == "") {
+            second005.value = " ";
+        }
+        if (second080.value == "") {
+            second080.value = " ";
+        }
+        if (second3.value == "") {
+            second3.value = " ";
+        }
+        if (second4.value == "") {
+            second4.value = " ";
+        }
+        if (second5.value == "") {
+            second5.value = " ";
+        }
+        if (second8.value == "") {
+            second8.value = " ";
+        }
+    }
+
+    function saveOneInner() {
+        form1.style.display = "none";
+        form2.style.display = "none";
+    }
+
+    function cancelInner() {
+        form1.style.display = "none";
+        form2.style.display = "none";
+        var inner3 = document.getElementById("inner3");
+        var inner4 = document.getElementById("inner4");
+        var inner5 = document.getElementById("inner5");
+        var inner6 = document.getElementById("inner6");
+        if (inner3.value === "") inner3.value = " ";
+        if (inner4.value === "") inner4.value = " ";
+        if (inner5.value === "") inner5.value = " ";
+        if (inner6.value === "") inner6.value = " ";
+    }
+
+    function saveOne() {
+        form1.style.display = "none";
+        form2.style.display = "none";
+    }
+
+    function addRow(sec, count) {
+        form3.style.display = "none";
+        form1.style.display = "none";
+        form4.style.display = "none";
+        form2.style.display = "inline";
+        document.getElementById("second6").value = sec
+    }
+
+    function editRow(sec, count, name, mark, m, t, s, r) {
+        form1.style.display = "none";
+        form2.style.display = "none";
+        form4.style.display = "none";
+        form3.style.display = "inline";
+        document.getElementById("s01").value = name;
+        document.getElementById("s1").value = mark;
+        document.getElementById("s2").value = m;
+        document.getElementById("s3").value = t;
+        document.getElementById("s4").value = s;
+        document.getElementById("s5").value = r;
+        document.getElementById("se6").value = sec;
+    }
+
+    function editInner(sec, count, name, mark, m, t, s, r) {
+        form1.style.display = "none";
+        form2.style.display = "none";
+        form3.style.display = "none";
+        form4.style.display = "inline";
+        document.getElementById("s011").value = name;
+        document.getElementById("s11").value = mark;
+        document.getElementById("s12").value = m;
+        document.getElementById("s13").value = t;
+        document.getElementById("s14").value = s;
+        document.getElementById("s15").value = r;
+        document.getElementById("se16").value = sec;
+    }
+
+    function saveRow() {
+        form3.style.display = "none";
+    }
+
+    var second = document.getElementById("form9")
+    var form09 = document.getElementById("form09")
+    var createTab = document.getElementById("createTab")
+    var deleted = document.getElementById("deleted")
+    var editTab = document.getElementById("editTab")
+
+    function addTab() {
+        createTab.style.display = "none";
+        editTab.style.display = "none";
+        deleted.style.display = "none";
+        second.style.display = "inline";
+        form09.style.display = "none";
+    }
+
+    function closeTab() {
+        second.style.display = "none";
+        form09.style.display = "none";
+        createTab.style.display = "inline";
+        editTab.style.display = "inline";
+        deleted.style.display = "inline";
+    }
+
+    function deleteTab() {
+        createTab.style.display = "inline";
+        editTab.style.display = "inline";
+        deleted.style.display = "inline";
+        second.style.display = "none";
+        form09.style.display = "none";
+    }
+
+    function edits(tabsName) {
+        form09.style.display = "inline";
+        second.style.display = "none";
+        createTab.style.display = "none";
+        editTab.style.display = "none";
+        deleted.style.display = "none";
+        document.getElementById("second22").value = tabsName;
+    }
+
+    var form010 = document.getElementById("form010");
+    var form0101 = document.getElementById("form0101");
+    var form0102 = document.getElementById("form0102");
+
+    function add_moreR() {
+        form.style.display = "none";
+        form010.style.display = "inline";
+    }
+
+    function saveOneReq() {
+        form010.style.display = "none";
+    }
+
+    function add_moreError() {
+        form0101.style.display = "inline";
+        form0102.style.display = "none";
+    }
+
+    function saveOneEr() {
+        form0101.style.display = "none";
+    }
+
+    function updateIndex(id, name, mark, m, t, s, r) {
+        form010.style.display = "none";
+        form.style.display = "inline";
+        document.getElementById("s00").value = id;
+        document.getElementById("s").value = name;
+        document.getElementById("s002").value = mark;
+        document.getElementById("s003").value = m;
+        document.getElementById("s004").value = t;
+        document.getElementById("s005").value = s;
+        document.getElementById("s080").value = r;
+    }
+
+    function saveReq() {
+        form.style.display = "none";
+    }
+
+    function cancelReq() {
+        let s005 = document.getElementById("s005");
+        let s003 = document.getElementById("s003");
+        let s004 = document.getElementById("s004");
+        let s080 = document.getElementById("s080");
+        if (s005.value === "") {
+            s005.value = " ";
+        }
+        if (s003.value === "") {
+            s003.value = " ";
+        }
+        if (s004.value === "") {
+            s004.value = " ";
+        }
+        if (s080.value === "") {
+            s080.value = " ";
+        }
+        form.style.display = "none";
+    }
+
+    function saveInner() {
+        form4.style.display = "none";
+    }
+
+    function canInner() {
+        form4.style.display = "none";
+        var s12 = document.getElementById("s12");
+        var s13 = document.getElementById("s13");
+        var s14 = document.getElementById("s14");
+        var s15 = document.getElementById("s15");
+        if (s12.value === "") s12.value = " ";
+        if (s13.value === "") s13.value = " ";
+        if (s14.value === "") s14.value = " ";
+        if (s15.value === "") s15.value = " ";
+    }
+
+    function editError(sec, count, name, mark, m, t, s, r) {
+        form0101.style.display = "none";
+        form0102.style.display = "inline";
+        document.getElementById("secondEr01").value = name;
+        document.getElementById("secondEr02").value = mark;
+        document.getElementById("secondEr03").value = m;
+        document.getElementById("secondEr04").value = t;
+        document.getElementById("secondEr05").value = s;
+        document.getElementById("secondEr06").value = r;
+        document.getElementById("seEr16").value = sec;
+    }
+
+    function saveErs() {
+        form0102.style.display = "none";
+        form0101.style.display = "none";
+    }
+
+    function canRow() {
+        var s2 = document.getElementById("s2");
+        var s3 = document.getElementById("s3");
+        var s4 = document.getElementById("s4");
+        var s5 = document.getElementById("s5");
+        if (s2.value === "") {
+            s2.value = " ";
+        }
+        if (s3.value === "") {
+            s3.value = " ";
+        }
+        if (s4.value === "") {
+            s4.value = " ";
+        }
+        if (s5.value === "") {
+            s5.value = " ";
+        }
+    }
+
+    function cancelEr() {
+        var secondEr3 = document.getElementById("secondEr3");
+        var secondEr4 = document.getElementById("secondEr4");
+        var secondEr5 = document.getElementById("secondEr5");
+        var secondEr6 = document.getElementById("secondEr6");
+        if (secondEr3.value === "") secondEr3.value = " ";
+        if (secondEr4.value === "") secondEr4.value = " ";
+        if (secondEr5.value === "") secondEr5.value = " ";
+        if (secondEr6.value === "") secondEr6.value = " ";
+    }
+
+    function cancelEr2() {
+        var secondEr03 = document.getElementById("secondEr03");
+        var secondEr04 = document.getElementById("secondEr04");
+        var secondEr05 = document.getElementById("secondEr05");
+        var secondEr06 = document.getElementById("secondEr06");
+        if (secondEr03.value === "") secondEr03.value = " ";
+        if (secondEr04.value === "") secondEr04.value = " ";
+        if (secondEr05.value === "") secondEr05.value = " ";
+        if (secondEr06.value === "") secondEr06.value = " ";
+    }
+</script>
+</html>

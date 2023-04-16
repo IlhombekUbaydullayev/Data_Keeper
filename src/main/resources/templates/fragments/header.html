@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Spring MVC</title>
+    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+</head>
+<body>
+<nav class="navbar navbar-expand-sm navbar-dark bg-primary" th:fragment="header">
+    <div th:each="tabs,iter:${tabs}">
+        <a class="navbar-brand" th:if="${iter.first}" th:text="${tabs.getTabName()}"
+           style="white-space: pre-wrap;font-size: 17px"
+           th:href="@{/example(index3 = ${third},periodicity = ${periodicity})}"></a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
+                aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarsExample04">
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item" th:class="${tabsName} == ${tabs.getTabName()} ? 'nav-item active' : 'nav-item'">
+                    <a class="nav-link" th:if="${iter.count > 1}" th:text="'    ' + ${tabs.getTabName()} + '    '"
+                       th:href="@{/tabsOthers(index3 = ${third},periodicity = ${periodicity},save = ${tabs.getId()})}"
+                       style="white-space: pre-wrap"><span
+                            class="sr-only">(current)</span></a>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <form id="form9" style="display: none" class="mx-3" th:action="@{/create/tab(periodicity = ${periodicity})}"
+          th:method="post" th:object="${createTab}">
+        <div id="tables" style="display: flex;font-family: math">
+            <input id="second20" type="text" class="form-control" th:field="*{tabName}"
+                   style="width: 100%" placeholder="Ma'lumot nomi"
+                   th:value="${keyword}" required/>
+            <button type="submit" class="btn btn-success btn-sm ml-1">
+                <svg class="svg-icon" viewBox="0 0 20 20">
+                    <path fill="none" d="M7.197,16.963H7.195c-0.204,0-0.399-0.083-0.544-0.227l-6.039-6.082c-0.3-0.302-0.297-0.788,0.003-1.087
+							C0.919,9.266,1.404,9.269,1.702,9.57l5.495,5.536L18.221,4.083c0.301-0.301,0.787-0.301,1.087,0c0.301,0.3,0.301,0.787,0,1.087
+							L7.741,16.738C7.596,16.882,7.401,16.963,7.197,16.963z"></path>
+                </svg>
+            </button>
+            <button type="button" class="btn btn-danger btn-sm ml-1" onclick="closeTab()">
+                <svg class="svg-icon" viewBox="0 0 20 20">
+                    <path fill="none" d="M11.469,10l7.08-7.08c0.406-0.406,0.406-1.064,0-1.469c-0.406-0.406-1.063-0.406-1.469,0L10,8.53l-7.081-7.08
+							c-0.406-0.406-1.064-0.406-1.469,0c-0.406,0.406-0.406,1.063,0,1.469L8.531,10L1.45,17.081c-0.406,0.406-0.406,1.064,0,1.469
+							c0.203,0.203,0.469,0.304,0.735,0.304c0.266,0,0.531-0.101,0.735-0.304L10,11.469l7.08,7.081c0.203,0.203,0.469,0.304,0.735,0.304
+							c0.267,0,0.532-0.101,0.735-0.304c0.406-0.406,0.406-1.064,0-1.469L11.469,10z"></path>
+                </svg>
+            </button>
+        </div>
+        <input id="second21" type="text" name="third" class="form-control" style="width: 60%; display: none"
+               placeholder="Davrivligi" th:value="${third}" required/>
+    </form>
+
+    <form id="form09" style="display: none" class="mx-3"
+          th:action="@{/edit/tab(periodicity = ${periodicity},tabId=${tabId})}"
+          th:method="post" th:object="${createTab}">
+        <div id="tables020" style="display: flex;font-family: math">
+            <input id="second22" type="text" class="form-control" th:field="*{tabName}" th:name="${tabsName}"
+                   th:value="${keyword}" required/>
+            <button type="submit" class="btn btn-success btn-sm ml-1">
+                <svg class="svg-icon" viewBox="0 0 20 20">
+                    <path fill="none" d="M7.197,16.963H7.195c-0.204,0-0.399-0.083-0.544-0.227l-6.039-6.082c-0.3-0.302-0.297-0.788,0.003-1.087
+							C0.919,9.266,1.404,9.269,1.702,9.57l5.495,5.536L18.221,4.083c0.301-0.301,0.787-0.301,1.087,0c0.301,0.3,0.301,0.787,0,1.087
+							L7.741,16.738C7.596,16.882,7.401,16.963,7.197,16.963z"></path>
+                </svg>
+            </button>
+            <button type="button" class="btn btn-danger btn-sm ml-1" onclick="closeTab()">
+                <svg class="svg-icon" viewBox="0 0 20 20">
+                    <path fill="none" d="M11.469,10l7.08-7.08c0.406-0.406,0.406-1.064,0-1.469c-0.406-0.406-1.063-0.406-1.469,0L10,8.53l-7.081-7.08
+							c-0.406-0.406-1.064-0.406-1.469,0c-0.406,0.406-0.406,1.063,0,1.469L8.531,10L1.45,17.081c-0.406,0.406-0.406,1.064,0,1.469
+							c0.203,0.203,0.469,0.304,0.735,0.304c0.266,0,0.531-0.101,0.735-0.304L10,11.469l7.08,7.081c0.203,0.203,0.469,0.304,0.735,0.304
+							c0.267,0,0.532-0.101,0.735-0.304c0.406-0.406,0.406-1.064,0-1.469L11.469,10z"></path>
+                </svg>
+            </button>
+        </div>
+        <input id="second23" type="text" name="third" class="form-control" style="width: 60%; display: none"
+               placeholder="Davrivligi" th:value="${third}" required/>
+    </form>
+    <button id="createTab" type="button" style="text-align: end" class="btn btn-success btn-sm" onclick="addTab()">
+        Qo'shish
+    </button>
+    <button id="editTab" type="button" style="text-align: end" class="btn btn-white btn-sm" th:value="${tabsName}" th:attr="onclick=|edits('${tabsName}')|">O'zgartirish
+    </button>
+    <a id="deleted" class="navbar-brand" th:href="@{/deleteTab(index3 = ${third},
+    periodicity = ${periodicity},tabId=${tabId})}" onclick="if (!confirm('Are you sure?')) { return false }">
+        <button th:if="${tab} != true" type="button" class="btn btn-danger float-right btn-sm text-right"
+                onclick="deleteTab()">
+            <svg class="svg-icon" viewBox="0 0 20 20">
+                <path fill="none" d="M7.083,8.25H5.917v7h1.167V8.25z M18.75,3h-5.834V1.25c0-0.323-0.262-0.583-0.582-0.583H7.667
+								c-0.322,0-0.583,0.261-0.583,0.583V3H1.25C0.928,3,0.667,3.261,0.667,3.583c0,0.323,0.261,0.583,0.583,0.583h1.167v14
+								c0,0.644,0.522,1.166,1.167,1.166h12.833c0.645,0,1.168-0.522,1.168-1.166v-14h1.166c0.322,0,0.584-0.261,0.584-0.583
+								C19.334,3.261,19.072,3,18.75,3z M8.25,1.833h3.5V3h-3.5V1.833z M16.416,17.584c0,0.322-0.262,0.583-0.582,0.583H4.167
+								c-0.322,0-0.583-0.261-0.583-0.583V4.167h12.833V17.584z M14.084,8.25h-1.168v7h1.168V8.25z M10.583,7.083H9.417v8.167h1.167V7.083
+								z"></path>
+            </svg>
+        </button>
+    </a>
+</nav>
+</body>
+<script>
+</script>
+</html>
